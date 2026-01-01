@@ -1,0 +1,353 @@
+/* ==================================================================
+   Bibliothèque Marocaine - Thème "Bois & Cuir" (complet)
+   Objectif: bois sombre, cuir ancien, cuivre/or patiné, papier vieilli
+   Remplace intégralement l'ancien thème "cute".
+   ================================================================== */
+
+/* Fonts recommandées (charger depuis _Layout.cshtml via Google Fonts si souhaité):
+   - 'Merriweather' ou 'Playfair Display' pour le corps/titres (serif classique)
+   - 'Amiri' ou 'Scheherazade New' pour titres calligraphiques arabes (optionnel)
+*/
+
+:root {
+    --wood-1: #2b1f14;       /* bois sombre (principal) */
+    --wood-2: #3a2920;       /* bois secondaire */
+    --leather: #4a2f23;      /* cuir foncé */
+    --leather-light: #6b422f;/* cuir patiné */
+    --copper: #b06b3f;       /* cuivre chaud */
+    /* removed gold; prefer copper/wood tones */
+    --sand: #e8dcc7;         /* papier / sable */
+    --garnet: #7b1320;       /* rouge grenat accent */
+    --text-dark: #221a12;    /* texte principal sombre */
+    --text-light: #f3eadc;   /* texte clair pour contrast */
+    --card-bg: linear-gradient(180deg, rgba(74,47,35,0.98), rgba(58,38,28,0.95));
+    --shadow-deep: rgba(0,0,0,0.6);
+}
+
+/* Reset de base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+    color: var(--text-light);
+    background-color: #efe6d6; /* beige sable de base */
+    min-height: 100vh;
+    display: flex;            /* permet footer en bas */
+    flex-direction: column;
+    line-height: 1.5;
+}
+
+/* Arrière-plan principal : image (wwwroot/images/image.png) + voile sable/papier */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    /* couche supérieure = voile sable translucide plus léger, puis image de fond */
+    background-image:
+        linear-gradient(rgba(238,220,188,0.25), rgba(232,210,180,0.25)),
+        url('/images/image.png');
+    background-size: cover, cover;
+    background-position: center center, center center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
+    /* augmente légèrement la luminosité pour un rendu plus clair */
+    filter: contrast(1.02) saturate(1.02) brightness(1.06);
+    opacity: 1;
+    pointer-events: none;
+    z-index: -1; /* place background behind all content */
+}
+
+/* Container global pour que le contenu soit lisible au-dessus du fond */
+.site-container {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem;
+}
+
+/* =========================
+   Header / Navbar (bandeau bois)
+   ========================= */
+header {
+    /* maroon transparent 30% as requested */
+    background: rgba(123,19,32,0.30); /* --garnet equivalent */
+    color: var(--copper);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    border-bottom: 1px solid rgba(60,42,30,0.15);
+    position: sticky; top: 0; z-index: 1000;
+    backdrop-filter: blur(6px);
+}
+
+.navbar {
+    padding: 0.8rem 1rem;
+}
+
+.navbar-brand {
+    font-family: 'Playfair Display', 'Georgia', serif;
+    font-weight: 700;
+    color: var(--copper) !important;
+    letter-spacing: 1px;
+    font-size: 1.6rem;
+    text-shadow: 0 2px 0 rgba(0,0,0,0.5);
+}
+
+.navbar-nav .nav-link {
+    color: rgba(243,234,220,0.95) !important;
+    padding: 0.6rem 0.9rem !important;
+    margin: 0 0.25rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.navbar-nav .nav-link:hover {
+    background: rgba(176,107,63,0.08); /* léger halo cuivre */
+    color: var(--sand) !important;
+}
+/* =========================
+   Layout - Containers, main
+   ========================= */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    /* transparent container: content sits directly on background image */
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 1.6rem;
+    box-shadow: none;
+}
+
+main { flex: 1 0 auto; }
+
+.footer { width:100%; background: linear-gradient(180deg, rgba(240,230,210,0.98), rgba(230,215,190,0.98)); color: var(--leather); border-top: 4px solid rgba(60,42,30,0.95); padding: 0.9rem 0; text-align:center; font-size:0.95rem; margin-top: auto; }
+
+
+.dropdown-menu {
+    background: linear-gradient(180deg, var(--wood-2), rgba(50,36,28,0.95));
+    border: 1px solid rgba(0,0,0,0.4);
+    color: var(--text-light);
+}
+
+.dropdown-item { color: var(--text-light); }
+
+/* =========================
+   Layout - Containers, main
+   ========================= */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    /* transparent container: content sits directly on background image */
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 1.6rem;
+    box-shadow: none;
+}
+
+main { flex: 1 0 auto; }
+
+/* =========================
+   Headings (serif + calligraphie optionnelle)
+   ========================= */
+h1, h2, h3, h4 {
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+    color: var(--wood-1);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.2px;
+    font-weight: 600;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.4rem; }
+
+/* ornament: small gilded underline for titles */
+h1::after, h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    margin-top: 8px;
+    background: linear-gradient(90deg, var(--gold), rgba(74,58,42,0.6));
+    border-radius: 2px;
+}
+
+/* =========================
+   Books grid & Cards (cuir embossé)
+   ========================= */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+@media (max-width: 1100px) { .books-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 800px)  { .books-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px)  { .books-grid { grid-template-columns: 1fr; } }
+
+.card {
+    /* transparent cards: no light rectangle, content sits directly on background image */
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    box-shadow: none;
+    overflow: visible;
+    display: flex; flex-direction: column;
+}
+
+.card::before {
+    /* subtle emboss texture */
+    content: '';
+    position: absolute; inset: 0;
+    background-image: linear-gradient(135deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 6px 6px;
+    opacity: 0.06;
+    pointer-events: none;
+}
+
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 0.6rem 0.6rem 1rem;
+    color: var(--text-light);
+    flex: 1 1 auto;
+    background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.18));
+    border-radius: 4px;
+}
+
+.card-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--bordeaux);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-text { color: var(--leather); font-size: 0.95rem; }
+
+.card-footer {
+    background: transparent;
+    padding: 0.5rem 0;
+    color: var(--text-secondary);
+    display:flex; align-items:center; justify-content:space-between;
+    border-top:1px solid rgba(0,0,0,0.04);
+}
+
+/* =========================
+   Buttons & controls (rectangulaire, cuir)
+   ========================= */
+.btn {
+    font-family: 'Merriweather', serif;
+    background: linear-gradient(180deg, var(--leather-light), var(--leather));
+    color: var(--sand);
+    border: 1px solid rgba(0,0,0,0.55);
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.35);
+}
+
+.btn:hover { transform: translateY(-2px); filter: brightness(0.96); }
+
+.btn-primary {
+    background: linear-gradient(180deg, var(--copper), var(--leather-light));
+    color: var(--wood-1);
+    border: 1px solid rgba(0,0,0,0.45);
+}
+
+.btn-outline-primary {
+    background: transparent; color: var(--wood-1);
+    border: 1px solid var(--copper);
+}
+
+/* remove cute pseudo elements */
+.btn::before { content: none !important; }
+
+/* =========================
+   Forms & Inputs (papier / cuir)
+   ========================= */
+.form-control, .form-select {
+    background: linear-gradient(180deg, rgba(255,250,238,0.95), rgba(245,235,220,0.95));
+    border: 1px solid rgba(60,42,30,0.9);
+    padding: 0.6rem 0.9rem;
+    border-radius: 6px;
+    color: var(--wood-1);
+}
+
+.form-control:focus { box-shadow: 0 0 0 4px rgba(176,107,63,0.08); outline: none; }
+
+label.form-label { color: var(--wood-1); font-weight: 700; }
+
+/* =========================
+   Tables (bois & cuivre)
+   ========================= */
+.table { border-collapse: separate; border-spacing: 0; width:100%; }
+.table thead th {
+    background: linear-gradient(180deg, var(--wood-2), var(--wood-1));
+    color: var(--sand); padding: 0.9rem; text-align:left; font-weight:700;
+    border-bottom: 2px solid rgba(0,0,0,0.5);
+}
+.table tbody td { padding: 0.85rem; background: rgba(255,250,240,0.92); color: var(--wood-1); border-top:1px solid rgba(0,0,0,0.05); }
+
+/* =========================
+   Blockquote, dividers, badges
+   ========================= */
+.divider { height: 3px; background: linear-gradient(90deg, transparent, var(--copper), transparent); margin:1.5rem 0; border-radius:2px; }
+
+blockquote {
+    border-left: 6px solid var(--copper);
+    background: linear-gradient(180deg, rgba(245,235,220,0.9), rgba(235,225,205,0.9));
+    padding: 1rem 1.2rem; color: var(--wood-1); font-style: italic; border-radius:6px;
+}
+
+.badge { background: var(--garnet); color: var(--sand); padding: 0.3rem 0.6rem; border-radius:6px; font-weight:700; }
+
+/* =========================
+   Media / Images
+   ========================= */
+.img-cute { border-radius: 8px; border: 3px solid rgba(60,42,30,0.9); box-shadow: 0 8px 20px rgba(0,0,0,0.45); }
+
+/* =========================
+   Footer (parchemin) 
+   ========================= */
+.footer {
+    width:100%; background: linear-gradient(180deg, rgba(240,230,210,0.98), rgba(230,215,190,0.98));
+    color: var(--leather); border-top: 4px solid rgba(74,58,42,0.95);
+    padding: 0.9rem 0; text-align:center; font-size:0.95rem;
+    margin-top: auto;
+}
+
+/* =========================
+   Responsive tweaks
+   ========================= */
+@media (max-width: 992px) {
+    .layout { display:block; padding: 0.8rem; }
+    .side-nav { width: 100%; margin-bottom: 1rem; }
+    .content.container { padding: 1rem; }
+}
+
+@media (max-width: 768px) {
+    .container { margin: 1rem; padding: 1rem; }
+    .navbar-brand { font-size: 1.25rem; }
+    .books-grid { grid-template-columns: repeat(2,1fr); gap:0.9rem; }
+}
+
+@media (max-width: 420px) {
+    .books-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 1.6rem; }
+}
+
+/* =========================
+   Accessibility & small helpers
+   ========================= */
+.gilded { box-shadow: 0 0 8px rgba(194,155,69,0.1) inset; }
+.emboss { text-shadow: 0 1px 0 rgba(0,0,0,0.6); }
+
+/* remove any leftover cute animation classes if present */
+.sparkle, .float { animation: none !important; }
+
+
+
+/* End of Moroccan library theme */

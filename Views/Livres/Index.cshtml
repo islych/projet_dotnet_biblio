@@ -1,0 +1,53 @@
+@model IEnumerable<Livre>
+@{
+    ViewData["Title"] = "Gestion des Livres";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="display-4 mb-4">📚 Gestion des Livres</h1>
+        <p>
+            <a asp-action="Create" class="btn btn-primary">➕ Ajouter un nouveau livre</a>
+        </p>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Catégorie</th>
+                    <th>Date de publication</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var livre in Model)
+                {
+                    <tr>
+                        <td>@livre.Titre</td>
+                        <td>@(livre.Auteur ?? "Non spécifié")</td>
+                        <td>@(livre.Categorie?.Nom ?? "Non catégorisé")</td>
+                        <td>@(livre.DatePublication?.ToShortDateString() ?? "Non spécifiée")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@livre.Id" class="btn btn-sm btn-info">Détails</a>
+                            <a asp-action="Edit" asp-route-id="@livre.Id" class="btn btn-sm btn-warning">Modifier</a>
+                            <a asp-action="Delete" asp-route-id="@livre.Id" class="btn btn-sm btn-danger">Supprimer</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <p>Aucun livre dans la base de données.</p>
+    </div>
+}
+

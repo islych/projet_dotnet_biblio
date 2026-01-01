@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Bibliothèque Web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;700&family=Playfair+Display:wght@400;700&family=EB+Garamond:wght@300;400;600&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        /* Styles temporaires pour la vidéo de fond */
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -9999;
+            overflow: hidden;
+        }
+        
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            opacity: 1;
+            filter: none;
+        }
+        
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.03);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .container {
+            background: rgba(245, 232, 218, 0.12);
+            backdrop-filter: blur(6px);
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <!-- Vidéo de fond -->
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="video/background video.mp4" type="video/mp4">
+            Votre navigateur ne supporte pas les vidéos HTML5.
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+    
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="images/logo.png" alt="Logo Magnus Librorum" class="navbar-logo me-2">
+                    <span class="site-title">Magnus Librorum</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-book me-1"></i>Catalogue
+                            </a>
+                        </li>
+                        @if (SessionHelper.IsAuthenticated(Context.Session))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Favoris" asp-action="Index">
+                                    <i class="fas fa-star me-1"></i>Mes Favoris
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Telechargements" asp-action="Index">
+                                    <i class="fas fa-download me-1"></i>Mes Téléchargements
+                                </a>
+                            </li>
+                            @if (SessionHelper.IsAdmin(Context.Session))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-cog me-1"></i>Administration
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="Dashboard"><i class="fas fa-chart-bar me-2"></i>Dashboard</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Livres" asp-action="Index"><i class="fas fa-book me-2"></i>Gérer les Livres</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Categories" asp-action="Index"><i class="fas fa-folder me-2"></i>Gérer les Catégories</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Utilisateurs" asp-action="Index"><i class="fas fa-users me-2"></i>Gérer les Utilisateurs</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (SessionHelper.IsAuthenticated(Context.Session))
+                        {
+                            <li class="nav-item">
+                                <span class="navbar-text me-3">
+                                    <i class="fas fa-user-circle me-1"></i>Bonjour, @SessionHelper.GetUserName(Context.Session)
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-light btn-sm">
+                                        <i class="fas fa-sign-out-alt me-1"></i>Déconnexion
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Auth" asp-action="Login">
+                                    <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Auth" asp-action="Register">
+                                    <i class="fas fa-user-plus me-1"></i>Inscription
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container fade-in">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <i class="fas fa-book-open me-2"></i>&copy; 2025 - Bibliothèque Web - Tous droits réservés
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

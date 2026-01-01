@@ -1,0 +1,39 @@
+@model Livre
+@{
+    ViewData["Title"] = "Détails du Livre";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>@Model.Titre</h1>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">Titre:</dt>
+            <dd class="col-sm-10">@Model.Titre</dd>
+
+            <dt class="col-sm-2">Auteur:</dt>
+            <dd class="col-sm-10">@(Model.Auteur ?? "Non spécifié")</dd>
+
+            <dt class="col-sm-2">Catégorie:</dt>
+            <dd class="col-sm-10">@(Model.Categorie?.Nom ?? "Non catégorisé")</dd>
+
+            <dt class="col-sm-2">Date de publication:</dt>
+            <dd class="col-sm-10">@(Model.DatePublication?.ToShortDateString() ?? "Non spécifiée")</dd>
+
+            <dt class="col-sm-2">Description:</dt>
+            <dd class="col-sm-10">@(Model.Description ?? "Aucune description")</dd>
+
+            <dt class="col-sm-2">Fichier PDF:</dt>
+            <dd class="col-sm-10">@(string.IsNullOrEmpty(Model.FichierPdf) ? "Aucun fichier" : Model.FichierPdf)</dd>
+
+            <dt class="col-sm-2">Image:</dt>
+            <dd class="col-sm-10">@(string.IsNullOrEmpty(Model.ImageCouverture) ? "Aucune image" : Model.ImageCouverture)</dd>
+        </dl>
+
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Modifier</a>
+            <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+    </div>
+</div>
+

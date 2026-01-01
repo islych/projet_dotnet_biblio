@@ -1,0 +1,38 @@
+@model Categorie
+@{
+    ViewData["Title"] = "Détails de la Catégorie";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>@Model.Nom</h1>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">Nom:</dt>
+            <dd class="col-sm-10">@Model.Nom</dd>
+
+            <dt class="col-sm-2">Description:</dt>
+            <dd class="col-sm-10">@(Model.Description ?? "Aucune description")</dd>
+
+            <dt class="col-sm-2">Nombre de livres:</dt>
+            <dd class="col-sm-10">@(Model.Livres?.Count ?? 0)</dd>
+        </dl>
+
+        @if (Model.Livres != null && Model.Livres.Any())
+        {
+            <h3>Livres dans cette catégorie</h3>
+            <ul>
+                @foreach (var livre in Model.Livres)
+                {
+                    <li>@livre.Titre</li>
+                }
+            </ul>
+        }
+
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Modifier</a>
+            <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+    </div>
+</div>
+

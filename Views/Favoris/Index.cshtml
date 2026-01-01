@@ -1,0 +1,56 @@
+@model IEnumerable<Favori>
+@{
+    ViewData["Title"] = "Mes Favoris";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="display-4 mb-4">⭐ Mes Favoris</h1>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var favori in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(favori.Livre?.ImageCouverture))
+                    {
+                        <img src="@favori.Livre.ImageCouverture" class="card-img-top" alt="@favori.Livre.Titre" style="height: 300px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 300px;">
+                            <span class="text-white fs-1">📖</span>
+                        </div>
+                    }
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@favori.Livre?.Titre</h5>
+                        <p class="card-text">
+                            <strong>Auteur:</strong> @(favori.Livre?.Auteur ?? "Non spécifié")<br />
+                            <strong>Ajouté le:</strong> @favori.DateAjout.ToShortDateString()
+                        </p>
+                        <div class="mt-auto">
+                            <a asp-controller="Home" asp-action="Details" asp-route-id="@favori.LivreId" class="btn btn-primary">Voir les détails</a>
+                            <form asp-action="Remove" method="post" class="d-inline">
+                                <input type="hidden" name="favoriId" value="@favori.Id" />
+                                <button type="submit" class="btn btn-danger">Retirer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <h4>Aucun favori</h4>
+        <p>Vous n'avez pas encore ajouté de livre à vos favoris.</p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Parcourir le catalogue</a>
+    </div>
+}
+

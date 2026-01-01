@@ -1,0 +1,89 @@
+@model IEnumerable<Livre>
+@{
+    ViewData["Title"] = "Catalogue des Livres";
+}
+
+<div class="page-header fade-in">
+    <h1 class="display-4">
+        Catalogue des Livres
+    </h1>
+    <p class="lead" style="color: var(--text-light);">Découvrez notre collection de livres</p>
+</div>
+
+<div class="row mb-4 fade-in">
+    <div class="col-md-12">
+        <form asp-action="Index" method="get" class="d-flex gap-2">
+            <input type="text" name="search" class="form-control" placeholder="Rechercher un livre..." value="@ViewBag.SearchTerm" />
+            <select name="categorieId" class="form-select" style="max-width: 200px;">
+                <option value="">Toutes les catégories</option>
+                @if (ViewBag.Categories is IEnumerable<Categorie> categories)
+                {
+                    @foreach (var categorie in categories)
+                    {
+                        <option value="@categorie.Id" selected="@(ViewBag.CategorieId != null && ViewBag.CategorieId.Equals(categorie.Id))">@categorie.Nom</option>
+                    }
+                }
+            </select>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="books-grid fade-in">
+        @foreach (var livre in Model)
+        {
+            <div class="card">
+                @if (!string.IsNullOrEmpty(livre.ImageCouverture))
+                {
+                    <img src="@livre.ImageCouverture" class="card-img-top img-cute" alt="@livre.Titre">
+                }
+                else
+                {
+                    <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 220px; background: #e6d8c2;">
+                        <span style="font-size: 4rem;">&nbsp;</span>
+                    </div>
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@livre.Titre</h5>
+                    <p class="card-text">
+                        <strong style="color: var(--dark-pink);">Auteur:</strong> @(livre.Auteur ?? "Non spécifié")<br />
+                        <strong style="color: var(--dark-pink);">Catégorie:</strong> @(livre.Categorie?.Nom ?? "Non catégorisé")
+                    </p>
+                    @if (!string.IsNullOrEmpty(livre.Description))
+                    {
+                        <p class="card-text" style="color: var(--text-light); font-size: 0.9rem;">
+                            @(livre.Description.Length > 100 ? livre.Description.Substring(0, 100) + "..." : livre.Description)
+                        </p>
+                    }
+                    <div class="card-footer">
+                        <a asp-action="Details" asp-route-id="@livre.Id" class="btn btn-primary">
+                            Voir les détails
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="col-md-12 fade-in">
+        <div class="alert" style="background: #efe3d4; border: 2px solid rgba(60,42,30,0.6); border-radius: 8px; color: var(--wood-1);">
+            <h4 style="color: var(--garnet);">Aucun livre trouvé</h4>
+            <p>Il n'y a actuellement aucun livre dans le catalogue.</p>
+            <a href="@Url.Action("Index")" class="btn btn-outline-primary mt-2">Voir tous les livres</a>
+        </div>
+    </div>
+}
+
+<div class="divider mt-5 mb-4"></div>
+
+<div class="row mt-4">
+    <div class="col-md-12 text-center">
+        <p style="color: var(--text-light); font-size: 0.9rem;">
+            Collection totale : @Model?.Count() livres
+        </p>
+    </div>
+</div>

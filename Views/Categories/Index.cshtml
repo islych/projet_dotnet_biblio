@@ -1,0 +1,51 @@
+@model IEnumerable<Categorie>
+@{
+    ViewData["Title"] = "Gestion des Catégories";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="display-4 mb-4">📂 Gestion des Catégories</h1>
+        <p>
+            <a asp-action="Create" class="btn btn-primary">➕ Ajouter une nouvelle catégorie</a>
+        </p>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Nombre de livres</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var categorie in Model)
+                {
+                    <tr>
+                        <td>@categorie.Nom</td>
+                        <td>@(categorie.Description ?? "Aucune description")</td>
+                        <td>@(categorie.Livres?.Count ?? 0)</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@categorie.Id" class="btn btn-sm btn-info">Détails</a>
+                            <a asp-action="Edit" asp-route-id="@categorie.Id" class="btn btn-sm btn-warning">Modifier</a>
+                            <a asp-action="Delete" asp-route-id="@categorie.Id" class="btn btn-sm btn-danger">Supprimer</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <p>Aucune catégorie dans la base de données.</p>
+    </div>
+}
+

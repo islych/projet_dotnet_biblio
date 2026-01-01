@@ -1,0 +1,80 @@
+@model IEnumerable<Compte>
+@{
+    ViewData["Title"] = "Gestion des Utilisateurs";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="display-4 mb-4">👥 Gestion des Utilisateurs</h1>
+        <p>
+            <a asp-action="Create" class="btn btn-primary">➕ Créer un nouvel utilisateur</a>
+        </p>
+    </div>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>Rôle</th>
+                    <th>Date d'inscription</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var compte in Model)
+                {
+                    <tr>
+                        <td>@compte.Id</td>
+                        <td>@compte.Nom</td>
+                        <td>@compte.Email</td>
+                        <td>
+                            @if (compte is Admin)
+                            {
+                                <span class="badge bg-danger">Admin</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary">Utilisateur</span>
+                            }
+                        </td>
+                        <td>@((compte as Utilisateur)?.Role ?? "N/A")</td>
+                        <td>@compte.DateInscription.ToShortDateString()</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@compte.Id" class="btn btn-sm btn-info">Détails</a>
+                            @if (compte is Utilisateur)
+                            {
+                                <a asp-action="Edit" asp-route-id="@compte.Id" class="btn btn-sm btn-warning">Modifier</a>
+                                <a asp-action="Delete" asp-route-id="@compte.Id" class="btn btn-sm btn-danger">Supprimer</a>
+                            }
+                            else
+                            {
+                                <span class="text-muted small">Admin protégé</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <p>Aucun utilisateur dans la base de données.</p>
+    </div>
+}
+

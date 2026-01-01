@@ -1,0 +1,59 @@
+@{
+    ViewData["Title"] = "Dashboard Administrateur";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="display-4 mb-4">📊 Dashboard Administrateur</h1>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Total Livres</h5>
+                <h2 class="card-text">@ViewBag.TotalLivres</h2>
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Livres" asp-action="Index" class="text-white">Gérer les livres →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Total Catégories</h5>
+                <h2 class="card-text">@ViewBag.TotalCategories</h2>
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Categories" asp-action="Index" class="text-white">Gérer les catégories →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Total Utilisateurs</h5>
+                <h2 class="card-text">@ViewBag.TotalUtilisateurs</h2>
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Utilisateurs" asp-action="Index" class="text-white">Gérer les utilisateurs →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="list-group">
+            <a asp-controller="Livres" asp-action="Create" class="list-group-item list-group-item-action">
+                ➕ Ajouter un nouveau livre
+            </a>
+            <a asp-controller="Categories" asp-action="Create" class="list-group-item list-group-item-action">
+                ➕ Ajouter une nouvelle catégorie
+            </a>
+        </div>
+    </div>
+</div>
+

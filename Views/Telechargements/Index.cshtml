@@ -1,0 +1,55 @@
+@model IEnumerable<Telechargement>
+@{
+    ViewData["Title"] = "Mes Téléchargements";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="display-4 mb-4">📥 Mes Téléchargements</h1>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Date de téléchargement</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var telechargement in Model)
+                {
+                    <tr>
+                        <td>@telechargement.Livre?.Titre</td>
+                        <td>@(telechargement.Livre?.Auteur ?? "Non spécifié")</td>
+                        <td>@telechargement.DateTelechargement.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            <a asp-controller="Home" asp-action="Details" asp-route-id="@telechargement.LivreId" class="btn btn-sm btn-primary">Voir</a>
+                            @if (!string.IsNullOrEmpty(telechargement.Livre?.FichierPdf))
+                            {
+                                <form asp-action="Download" method="post" class="d-inline">
+                                    <input type="hidden" name="livreId" value="@telechargement.LivreId" />
+                                    <button type="submit" class="btn btn-sm btn-success">Télécharger</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <h4>Aucun téléchargement</h4>
+        <p>Vous n'avez pas encore téléchargé de livre.</p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Parcourir le catalogue</a>
+    </div>
+}
+

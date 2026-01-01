@@ -1,0 +1,84 @@
+@model Livre
+@{
+    ViewData["Title"] = "Modifier un Livre";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>Modifier le livre</h2>
+        <hr />
+
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label asp-for="Titre" class="form-label"></label>
+                <input asp-for="Titre" class="form-control" />
+                <span asp-validation-for="Titre" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Auteur" class="form-label"></label>
+                <input asp-for="Auteur" class="form-control" />
+                <span asp-validation-for="Auteur" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategorieId" class="form-label"></label>
+                <select asp-for="CategorieId" class="form-select" asp-items="ViewBag.Categories">
+                    <option value="">-- Sélectionner une catégorie --</option>
+                </select>
+                <span asp-validation-for="CategorieId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DatePublication" class="form-label"></label>
+                <input asp-for="DatePublication" type="date" class="form-control" />
+                <span asp-validation-for="DatePublication" class="text-danger"></span>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.FichierPdf))
+            {
+                <div class="mb-3">
+                    <label class="form-label">Fichier PDF actuel</label>
+                    <p class="form-control-plaintext">@Model.FichierPdf</p>
+                </div>
+            }
+
+            <div class="mb-3">
+                <label for="fichierPdf" class="form-label">Nouveau fichier PDF (laisser vide pour conserver l'actuel)</label>
+                <input type="file" name="fichierPdf" class="form-control" accept=".pdf" />
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.ImageCouverture))
+            {
+                <div class="mb-3">
+                    <label class="form-label">Image actuelle</label>
+                    <img src="@Model.ImageCouverture" class="img-thumbnail" style="max-height: 200px;" />
+                </div>
+            }
+
+            <div class="mb-3">
+                <label for="imageCouverture" class="form-label">Nouvelle image (laisser vide pour conserver l'actuelle)</label>
+                <input type="file" name="imageCouverture" class="form-control" accept="image/*" />
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

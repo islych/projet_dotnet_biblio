@@ -1,0 +1,52 @@
+@model Compte
+@{
+    ViewData["Title"] = "Supprimer un Utilisateur";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>Supprimer l'utilisateur</h2>
+        <hr />
+        <h3>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</h3>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+
+        <div>
+            <dl class="row">
+                <dt class="col-sm-2">ID:</dt>
+                <dd class="col-sm-10">@Model.Id</dd>
+
+                <dt class="col-sm-2">Nom:</dt>
+                <dd class="col-sm-10">@Model.Nom</dd>
+
+                <dt class="col-sm-2">Email:</dt>
+                <dd class="col-sm-10">@Model.Email</dd>
+
+                <dt class="col-sm-2">Type:</dt>
+                <dd class="col-sm-10">@Model.Discriminator</dd>
+
+                @if (Model is Utilisateur utilisateur)
+                {
+                    <dt class="col-sm-2">Rôle:</dt>
+                    <dd class="col-sm-10">@utilisateur.Role</dd>
+                }
+            </dl>
+
+            <div class="alert alert-warning">
+                <strong>Attention !</strong> Cette action est irréversible. Toutes les données associées (favoris, téléchargements) seront également supprimées.
+            </div>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+                <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+            </form>
+        </div>
+    </div>
+</div>
+

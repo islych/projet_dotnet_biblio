@@ -1,0 +1,52 @@
+@model Compte
+@{
+    ViewData["Title"] = "Détails de l'Utilisateur";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Détails de l'utilisateur</h1>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">ID:</dt>
+            <dd class="col-sm-10">@Model.Id</dd>
+
+            <dt class="col-sm-2">Nom:</dt>
+            <dd class="col-sm-10">@Model.Nom</dd>
+
+            <dt class="col-sm-2">Email:</dt>
+            <dd class="col-sm-10">@Model.Email</dd>
+
+            <dt class="col-sm-2">Type:</dt>
+            <dd class="col-sm-10">
+                @if (Model is Admin)
+                {
+                    <span class="badge bg-danger">Admin</span>
+                }
+                else
+                {
+                    <span class="badge bg-primary">Utilisateur</span>
+                }
+            </dd>
+
+            @if (Model is Utilisateur utilisateur)
+            {
+                <dt class="col-sm-2">Rôle:</dt>
+                <dd class="col-sm-10">@utilisateur.Role</dd>
+            }
+
+            <dt class="col-sm-2">Date d'inscription:</dt>
+            <dd class="col-sm-10">@Model.DateInscription.ToString("dd/MM/yyyy HH:mm")</dd>
+        </dl>
+
+        <div class="mt-4">
+            @if (Model is Utilisateur)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Modifier</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Supprimer</a>
+            }
+            <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+    </div>
+</div>
+
